@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity('like')
-export default class Like {
+@Entity('hate')
+export default class Hate {
 
   @PrimaryGeneratedColumn()
   idx!: number;
