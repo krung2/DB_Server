@@ -4,7 +4,6 @@ import { GetPost, GetPosts } from 'src/libs/interface/IPost';
 import { IUser } from 'src/libs/interface/IUser';
 import { returnLib } from 'src/libs/return.lib';
 import CheckGaurd from 'src/middleware/check.middleware';
-import PostEntity from 'src/models/post.entity';
 import { AddPostDto } from './dto/addPost.dto';
 import { PostService } from './post.service';
 
