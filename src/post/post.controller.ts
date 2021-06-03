@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
 import { Token } from 'src/libs/decorator/token.decorator';
 import { IUser } from 'src/libs/interface/IUser';
 import { returnLib } from 'src/libs/return.lib';
@@ -32,5 +32,15 @@ export class PostController {
     const Posts: PostEntity[] = await this.postService.getAllPost();
 
     return returnLib(200, '게시글 모두 불러오기 성공', Posts);
+  }
+
+  @Get('/:idx')
+  async getPost(
+    @Param('idx') idx: number
+  ) {
+
+    const post: PostEntity = await this.postService.getPost(idx);
+
+    return returnLib(200, '특정 게시글 불러오기 성공', post);
   }
 }
