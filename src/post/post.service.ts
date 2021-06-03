@@ -27,4 +27,9 @@ export class PostService {
 
     await this.postRepository.save(createPost);
   }
+
+  async getAllPost() {
+
+
+  }
 }
