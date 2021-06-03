@@ -1,5 +1,6 @@
-import { Body, Controller, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Token } from 'src/libs/decorator/token.decorator';
+import { GetPost, GetPosts } from 'src/libs/interface/IPost';
 import { IUser } from 'src/libs/interface/IUser';
 import { returnLib } from 'src/libs/return.lib';
 import CheckGaurd from 'src/middleware/check.middleware';
@@ -29,17 +30,19 @@ export class PostController {
   @Get()
   async getAllPost() {
 
-    const Posts: PostEntity[] = await this.postService.getAllPost();
+    const Posts: GetPosts[] = await this.postService.getAllPost();
 
     return returnLib(200, '게시글 모두 불러오기 성공', Posts);
   }
 
   @Get('/:idx')
+  @UseGuards(new CheckGaurd())
   async getPost(
-    @Param('idx') idx: number
+    @Param('idx') idx: number,
+    @Token() tokenUser?: IUser,
   ) {
 
-    const post: PostEntity = await this.postService.getPost(idx);
+    const post: GetPost = await this.postService.getPost(idx, tokenUser);
 
     return returnLib(200, '특정 게시글 불러오기 성공', post);
   }
