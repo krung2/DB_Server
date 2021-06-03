@@ -3,7 +3,7 @@ import { Token } from 'src/libs/decorator/token.decorator';
 import { IUser } from 'src/libs/interface/IUser';
 import { returnLib } from 'src/libs/return.lib';
 import CheckGaurd from 'src/middleware/check.middleware';
-import { AddPost } from './dto/addPost.dto';
+import { AddPostDto } from './dto/addPost.dto';
 import { PostService } from './post.service';
 
 @Controller('post')
@@ -15,10 +15,12 @@ export class PostController {
 
   @Post()
   @UseGuards(new CheckGaurd())
-  addPost(
-    @Body() addPostDto: AddPost,
+  async addPost(
+    @Body() addPostDto: AddPostDto,
     @Token() tokenUser?: IUser,
   ) {
+
+    await this.postService.addPost(addPostDto, tokenUser);
 
     return returnLib(201, '게시글 게시 성공');
   }
