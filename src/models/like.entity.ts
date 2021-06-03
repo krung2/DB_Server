@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import Post from "./post.entity";
 
 @Entity('like')
 export default class Like {
@@ -15,4 +16,10 @@ export default class Like {
     name: 'created_at'
   })
   createdAt!: Date;
+
+  @JoinColumn({ name: 'post_idx' })
+  @ManyToOne(type => Post, {
+    onDelete: 'CASCADE'
+  })
+  post!: Post;
 }
