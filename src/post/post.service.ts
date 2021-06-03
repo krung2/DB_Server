@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IUser } from 'src/libs/interface/IUser';
 import { returnLib } from 'src/libs/return.lib';
@@ -33,5 +33,19 @@ export class PostService {
 
     return this.postRepository.createQueryBuilder()
       .getMany();
+  }
+
+  async getPost(idx: number): Promise<Post> {
+
+    const post: Post | undefined = await this.postRepository.createQueryBuilder()
+      .where('idx = :idx', { idx })
+      .getOne();
+
+    if (post === undefined) {
+
+      throw new NotFoundException('없는 게시글입니다');
+    }
+
+    return post;
   }
 }
