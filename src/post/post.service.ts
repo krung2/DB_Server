@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IUser } from 'src/libs/interface/IUser';
+import { returnLib } from 'src/libs/return.lib';
 import Post from 'src/models/post.entity';
 import { Repository } from 'typeorm';
 import { AddPostDto } from './dto/addPost.dto';
@@ -28,8 +29,9 @@ export class PostService {
     await this.postRepository.save(createPost);
   }
 
-  async getAllPost() {
+  async getAllPost(): Promise<Post[]> {
 
-
+    return this.postRepository.createQueryBuilder()
+      .getMany();
   }
 }
