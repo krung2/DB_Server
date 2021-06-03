@@ -19,7 +19,7 @@ export class PostService {
 
     if (tokenUser === undefined) {
 
-      createPost.name = "익명";
+      createPost.name = "ㅇㅇ";
     } else {
 
       createPost.name = tokenUser.name;
