@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IUser } from 'src/libs/interface/IUser';
 import Like from 'src/models/like.entity';
@@ -15,7 +15,7 @@ export class LikeService {
     private readonly postService: PostService
   ) { }
 
-  async addLike(tokenUser: IUser, postIdx: number) {
+  async addLike(tokenUser: IUser, postIdx: number): Promise<void> {
 
     // const like: Like | undefined = await this.likeRepository.findOne({
     //   where: {
@@ -38,10 +38,22 @@ export class LikeService {
 
   }
 
-  async delLike(tokenUser: IUser, postIdx: number) {
+  async delLike(tokenUser: IUser, postIdx: number): Promise<void> {
 
-    const post: Post = await this.postService.getPostByIdx(postIdx);
+    await this.postService.getPostByIdx(postIdx);
 
-    await this
+    const { name } = tokenUser;
+
+    const like: Like | undefined = await this.likeRepository.createQueryBuilder()
+      .where('user_id = :name', { name })
+      .where('post_idx = :postIdx', { postIdx })
+      .getOne();
+
+    if (like === undefined) {
+
+      throw new NotFoundException('없는 좋아요 입니다');
+    }
+
+    await this.likeRepository.delete(like);
   }
 }
