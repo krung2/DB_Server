@@ -4,9 +4,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ormConfig } from './config/ormConfig';
 import { PostModule } from './post/post.module';
+import { LikeModule } from './like/like.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(ormConfig), PostModule],
+  imports: [TypeOrmModule.forRoot(ormConfig), PostModule, LikeModule],
   controllers: [AppController],
   providers: [AppService],
 })
