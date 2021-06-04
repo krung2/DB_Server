@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IUser } from 'src/libs/interface/IUser';
 import Like from 'src/models/like.entity';
+import Post from 'src/models/post.entity';
 import { PostService } from 'src/post/post.service';
 import { Repository } from 'typeorm';
 
@@ -37,7 +38,9 @@ export class LikeService {
 
   }
 
-  async delLike(tokenUser: IUser) {
+  async delLike(tokenUser: IUser, postIdx: number) {
+
+    const post: Post = await this.postService.getPostByIdx(postIdx);
 
     await this
   }

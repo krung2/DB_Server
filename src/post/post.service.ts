@@ -96,4 +96,18 @@ export class PostService {
 
     return post;
   }
+
+  public async getPostByIdx(idx: number): Promise<Post> {
+
+    const post: Post | undefined = await this.postRepository.createQueryBuilder()
+      .where('idx = :idx', { idx })
+      .getOne();
+
+    if (post === undefined) {
+
+      throw new NotFoundException('없는 게시글 입니다');
+    }
+
+    return post;
+  }
 }
