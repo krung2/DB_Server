@@ -21,3 +21,7 @@ export const DATABASE = {
   PASSWORD: getValue('DATABASE_PASSWORD'),
   DATABASENAME: getValue('DATABASE_DATABASE_NAME'),
 };
+
+export const SERVER = {
+  OPENAPI: getValue('OPENAPI_SERVER'),
+}
