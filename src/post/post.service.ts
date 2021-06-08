@@ -36,6 +36,7 @@ export class PostService {
     const posts: GetPosts[] = await this.postRepository.createQueryBuilder('post')
       .leftJoinAndSelect('post.like', 'like')
       .leftJoinAndSelect('post.hate', 'hate')
+      .orderBy('post.createdAt', 'DESC')
       .getMany();
 
     for (const post of posts) {
