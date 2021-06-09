@@ -31,9 +31,9 @@ export class PostService {
     await this.postRepository.save(createPost);
   }
 
-  async getAllPost(): Promise<GetPosts[]> {
+  async getAllPost(tokenUser?: IUser): Promise<GetPosts[]> {
 
-    const posts: GetPosts[] = await this.postRepository.createQueryBuilder('post')
+    const posts: GetPost[] = await this.postRepository.createQueryBuilder('post')
       .leftJoinAndSelect('post.like', 'like')
       .leftJoinAndSelect('post.hate', 'hate')
       .orderBy('post.createdAt', 'DESC')
@@ -43,6 +43,36 @@ export class PostService {
 
       post.likeCount = post.like.length;
       post.hateCount = post.hate.length;
+      post.isExistLike = false;
+      post.isExistHate = false;
+
+      if (tokenUser === undefined) {
+
+        continue;
+      }
+
+      post.isExistLike = true;
+      post.isExistHate = true;
+
+      post.like.map((like: Like) => {
+        const { userId } = like;
+
+        if (userId === tokenUser.name) {
+
+          post.isExistLike = true;
+          return;
+        }
+      })
+
+      post.hate.map((hate: Hate) => {
+        const { userId } = hate;
+
+        if (userId === tokenUser.name) {
+
+          post.isExistLike = true;
+          return;
+        }
+      })
     }
 
     return posts;

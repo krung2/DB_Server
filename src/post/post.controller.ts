@@ -27,7 +27,10 @@ export class PostController {
   }
 
   @Get()
-  async getAllPost() {
+  @UseGuards(new CheckGaurd())
+  async getAllPost(
+    @Token() tokenUser?: IUser,
+  ) {
 
     const Posts: GetPosts[] = await this.postService.getAllPost();
 
