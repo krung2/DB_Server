@@ -31,7 +31,7 @@ export class PostService {
     await this.postRepository.save(createPost);
   }
 
-  async getAllPost(tokenUser?: IUser): Promise<GetPosts[]> {
+  async getAllPost(ip: string): Promise<GetPosts[]> {
 
     const posts: GetPost[] = await this.postRepository.createQueryBuilder('post')
       .leftJoinAndSelect('post.like', 'like')
@@ -43,36 +43,41 @@ export class PostService {
 
       post.likeCount = post.like.length;
       post.hateCount = post.hate.length;
+
       post.isExistLike = true;
       post.isExistHate = true;
 
-      if (tokenUser === undefined) {
-
-        continue;
-      }
-
-      post.isExistLike = false;
-      post.isExistHate = false;
-
       post.like.map((like: Like) => {
-        const { userId } = like;
+        const { userIp, createdAt } = like;
 
-        if (userId === tokenUser.name) {
+        if (ip === userIp) {
 
-          post.isExistLike = true;
-          return;
+          const now = new Date();
+
+          console.log(createdAt);
+          now.setDate(now.getDate() + 1);
+          console.log(now);
+
+          console.log('2021-06-09 15:59:22.418519' < String(new Date(new Date().getDate() + 1)));
+
+          if (createdAt < new Date(now.getDate() + 1)) {
+
+            console.log(2);
+
+            post.isExistLike = false;
+          }
         }
       })
 
-      post.hate.map((hate: Hate) => {
-        const { userId } = hate;
+      // post.hate.map((hate: Hate) => {
+      //   const { userId } = hate;
 
-        if (userId === tokenUser.name) {
+      //   if (userId === tokenUser.name) {
 
-          post.isExistLike = true;
-          return;
-        }
-      })
+      //     post.isExistLike = true;
+      //     return;
+      //   }
+      // })
     }
 
     return posts;
@@ -106,9 +111,9 @@ export class PostService {
     post.isExistHate = false;
 
     post.like.map((like: Like) => {
-      const { userId } = like;
+      const { userIp } = like;
 
-      if (userId === tokenUser.name) {
+      if (userIp === tokenUser.name) {
 
         post.isExistLike = true;
         return;

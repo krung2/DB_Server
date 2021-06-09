@@ -15,7 +15,7 @@ export class LikeService {
     private readonly postService: PostService
   ) { }
 
-  async addLike(tokenUser: IUser, postIdx: number): Promise<void> {
+  async addLike(ip: string, postIdx: number): Promise<void> {
 
     // const like: Like | undefined = await this.likeRepository.findOne({
     //   where: {
@@ -30,9 +30,12 @@ export class LikeService {
 
     // TODO: post service 하나 찾아오기  쓰기
 
+    const post: Post = await this.postService.getPostByIdx(postIdx);
+
     const createLike = this.likeRepository.create();
 
-    createLike.userId = tokenUser.name;
+    createLike.userIp = ip;
+    createLike.post = post;
 
     await this.likeRepository.save(createLike);
 

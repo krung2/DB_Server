@@ -1,4 +1,5 @@
-import { Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Delete, InternalServerErrorException, Logger, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
 import { Token } from 'src/libs/decorator/token.decorator';
 import { IUser } from 'src/libs/interface/IUser';
 import { returnLib } from 'src/libs/return.lib';
@@ -13,13 +14,20 @@ export class LikeController {
   ) { }
 
   @Post('/:idx')
-  @UseGuards(new AuthGaurd())
   async addLike(
-    @Token() tokenUser: IUser,
+    @Req() req: Request,
     @Param('idx') idx: number,
   ) {
 
-    await this.likeService.addLike(tokenUser, idx);
+    const ip: string | string[] = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+
+    if (Array.isArray(ip)) {
+
+      Logger.error(ip);
+      throw new InternalServerErrorException('서버 오류');
+    }
+
+    await this.likeService.addLike(ip, idx);
 
     return returnLib(201, '좋아요 성공');
   }

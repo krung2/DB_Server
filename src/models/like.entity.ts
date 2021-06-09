@@ -8,9 +8,9 @@ export default class Like {
   idx!: number;
 
   @Column({
-    name: 'user_id',
+    name: 'user_ip',
   })
-  userId!: string;
+  userIp!: string;
 
   @CreateDateColumn({
     name: 'created_at'
