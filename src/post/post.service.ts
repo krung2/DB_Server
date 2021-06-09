@@ -43,16 +43,16 @@ export class PostService {
 
       post.likeCount = post.like.length;
       post.hateCount = post.hate.length;
-      post.isExistLike = false;
-      post.isExistHate = false;
+      post.isExistLike = true;
+      post.isExistHate = true;
 
       if (tokenUser === undefined) {
 
         continue;
       }
 
-      post.isExistLike = true;
-      post.isExistHate = true;
+      post.isExistLike = false;
+      post.isExistHate = false;
 
       post.like.map((like: Like) => {
         const { userId } = like;
