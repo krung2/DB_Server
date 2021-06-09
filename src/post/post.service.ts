@@ -54,13 +54,9 @@ export class PostService {
 
           const now = new Date();
 
-          console.log(createdAt);
           now.setDate(now.getDate() + 1);
-          console.log(now);
 
-          console.log('2021-06-09 15:59:22.418519' < String(new Date(new Date().getDate() + 1)));
-
-          if (createdAt < new Date(now.getDate() + 1)) {
+          if (createdAt < now) {
 
             console.log(2);
 
