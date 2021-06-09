@@ -58,8 +58,6 @@ export class PostService {
 
           if (createdAt < now) {
 
-            console.log(2);
-
             post.isExistLike = false;
           }
         }
