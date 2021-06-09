@@ -27,9 +27,12 @@ export class PostController {
   }
 
   @Get()
-  async getAllPost() {
+  @UseGuards(new CheckGaurd())
+  async getAllPost(
+    @Token() tokenUser?: IUser,
+  ) {
 
-    const Posts: GetPosts[] = await this.postService.getAllPost();
+    const Posts: GetPosts[] = await this.postService.getAllPost(tokenUser);
 
     return returnLib(200, '게시글 모두 불러오기 성공', Posts);
   }
