@@ -31,7 +31,7 @@ export class PostService {
     await this.postRepository.save(createPost);
   }
 
-  async getAllPost(ip: string): Promise<GetPosts[]> {
+  async getAllPost(token: string): Promise<GetPosts[]> {
 
     const posts: GetPost[] = await this.postRepository.createQueryBuilder('post')
       .leftJoinAndSelect('post.like', 'like')
@@ -50,7 +50,7 @@ export class PostService {
       post.like.map((like: Like) => {
         const { userIp, createdAt } = like;
 
-        if (ip === userIp) {
+        if (token === userIp) {
 
           const now = new Date();
 
