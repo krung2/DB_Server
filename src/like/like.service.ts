@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IUser } from 'src/libs/interface/IUser';
 import Like from 'src/models/like.entity';
@@ -15,7 +15,7 @@ export class LikeService {
     private readonly postService: PostService
   ) { }
 
-  async addLike(ip: string, postIdx: number): Promise<void> {
+  async addLike(token: string, postIdx: number): Promise<void> {
 
     // const like: Like | undefined = await this.likeRepository.findOne({
     //   where: {
@@ -34,7 +34,7 @@ export class LikeService {
 
     const createLike = this.likeRepository.create();
 
-    createLike.userIp = ip;
+    createLike.userIp = token;
     createLike.post = post;
 
     await this.likeRepository.save(createLike);

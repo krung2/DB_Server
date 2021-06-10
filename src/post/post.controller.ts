@@ -1,4 +1,4 @@
-import { Body, Controller, Get, InternalServerErrorException, Logger, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, InternalServerErrorException, Logger, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { Token } from 'src/libs/decorator/token.decorator';
 import { GetPost, GetPosts } from 'src/libs/interface/IPost';
@@ -30,19 +30,11 @@ export class PostController {
   @Get()
   @UseGuards(new CheckGaurd())
   async getAllPost(
-    @Req() req: Request,
+    @Query('token') token: string,
     @Token() tokenUser?: IUser,
   ) {
 
-    const ip: string | string[] = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-
-    if (Array.isArray(ip)) {
-
-      Logger.error(ip);
-      throw new InternalServerErrorException('서버 오류');
-    }
-
-    const Posts: GetPosts[] = await this.postService.getAllPost(ip);
+    const Posts: GetPosts[] = await this.postService.getAllPost(token);
 
     return returnLib(200, '게시글 모두 불러오기 성공', Posts);
   }
